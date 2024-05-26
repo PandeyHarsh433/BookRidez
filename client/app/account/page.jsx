@@ -969,7 +969,7 @@ const Account = () => {
 
               {customerProduct &&
                 customerProduct?.map((item, index) => (
-                  <div className="w-full flex sm:flex-row flex-col justify-between items-center border-b border-b-slate-400 py-4">
+                  <div className="w-full flex sm:flex-row flex-col justify-between items-center border-b border-b-slate-400 py-4" key = {index}>
                     <div className="sm:w-[30%] w-full">
                       <img
                         src={item?.image}

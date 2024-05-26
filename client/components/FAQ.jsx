@@ -18,7 +18,7 @@ const FAQ = () => {
     <section className="bg-white mx-6">
       <div className="container px-6 py-10 mx-auto">
         <h1 className="text-2xl font-semibold text-gray-800 lg:text-3xl ">
-          FAQ's
+          FAQ&apos;s
         </h1>
 
         <hr className="my-6 border-gray-200" />
