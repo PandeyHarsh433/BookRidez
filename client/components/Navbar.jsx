@@ -70,7 +70,7 @@ const Navbar = ({ getCookies }) => {
           <div className="flex items-center justify-between">
             <Link href="/">
               <img
-                className="h-20 sm:h-14"
+                className="h-8 sm:h-14"
                 src="/logo.png"
                 alt="Logo"
               />
