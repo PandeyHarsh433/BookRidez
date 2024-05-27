@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSetRecoilState } from "recoil";
 import { loadingState } from "@/data/store";
 
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = "https://bookridez.onrender.com";
 
 const useApiRequest = () => {
   const setLoadingState = useSetRecoilState(loadingState);
