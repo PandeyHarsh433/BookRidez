@@ -41,15 +41,18 @@ const Account = () => {
   const [openAccordion, setOpenAccordion] = useState(null);
   const { data, error, sendRequest } = useApiRequest();
 
-  useEffect(() => {
+   useEffect(() => {
     const fetchCookies = async () => {
       try {
         const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
-        const response = await fetch(`${baseUrl}/api/get-cookies`);
+        const response = await fetch(`${baseUrl}/api/get-cookies`, {
+          method: 'GET',
+          credentials: 'include'
+        });
         if (response.ok) {
           const data = await response.json();
-          setIsLoggedIn(Boolean(data.loggedIn));
-          setUserRole(data?.role);
+          setIsLoggedIn(Boolean(data?.loggedIn));
+          setUserRole(data?.role)
         } else {
           throw new Error('Failed to fetch cookies');
         }
