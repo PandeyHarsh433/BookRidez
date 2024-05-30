@@ -55,16 +55,19 @@ const Booking = () => {
   const inputRef = useRef();
   const router = useRouter();
 
+  
   useEffect(() => {
     const fetchCookies = async () => {
       try {
         const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
-        const response = await fetch(`${baseUrl}/api/get-cookies`);
+        const response = await fetch(`${baseUrl}/api/get-cookies`, {
+          method: 'GET',
+          credentials: 'include'
+        });
         if (response.ok) {
           const data = await response.json();
-          console.log(Boolean(data.loggedIn))
-          setIsLoggedIn(Boolean(data.loggedIn));
-          setUserRole(data?.role);
+          setIsLoggedIn(Boolean(data?.loggedIn));
+          setUserRole(data?.role)
           setUserId(data?.userId)
         } else {
           throw new Error('Failed to fetch cookies');
