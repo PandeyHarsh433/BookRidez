@@ -1,5 +1,5 @@
 require("dotenv").config();
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { StandaloneSearchBox, LoadScript } from "@react-google-maps/api";
 import { FaAngleDown } from "react-icons/fa";
 import { MdMyLocation } from "react-icons/md";
@@ -7,8 +7,6 @@ import { orderDetailsState, useOrderDetailsFromLocalStorage } from "@/data/store
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
-import useAuth from "@/hooks/useAuth";
-import getCookies from "@/utils/cookies";
 
 const libraries = ["places"];
 
@@ -43,6 +41,9 @@ const Booking = () => {
   const [pickupTimeOpen, setPickupTimeOpen] = useState(false);
   const [dropTimeOpen, setDropTimeOpen] = useState(false);
   const [pickupDate, setPickupDate] = useState("");
+  const [userRole, setUserRole] = useState();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState("");
   const [dropDate, setDropDate] = useState("");
   const [pickupTimeIndex, setPickupTimeIndex] = useState(0);
   const [dropTimeIndex, setDropTimeIndex] = useState(1);
@@ -54,7 +55,28 @@ const Booking = () => {
   const inputRef = useRef();
   const router = useRouter();
 
-  const { isLoggedIn, userRole, userId, loading } = useAuth(getCookies);
+  useEffect(() => {
+    const fetchCookies = async () => {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
+        const response = await fetch(`${baseUrl}/api/get-cookies`);
+        if (response.ok) {
+          const data = await response.json();
+          console.log(Boolean(data.loggedIn))
+          setIsLoggedIn(Boolean(data.loggedIn));
+          setUserRole(data?.role);
+          setUserId(data?.userId)
+        } else {
+          throw new Error('Failed to fetch cookies');
+        }
+      } catch (error) {
+        console.error("Error fetching cookies:", error);
+        toast.error("Failed to fetch cookies");
+      }
+    };
+
+    fetchCookies();
+  }, []);
 
   const handleSearch = () => {
     if (!isLoggedIn) {
