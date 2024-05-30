@@ -3,7 +3,7 @@ import React from "react";
 const Loader = () => {
   return (
     <div className="fixed overflow-y-auto inset-0 z-[99999]">
-      <div className="flex items-center justify-center bg-slate-700 bg-opacity-70 sm:h-screen">
+      <div className="flex items-center justify-center bg-slate-700 bg-opacity-70 h-screen">
         <div aria-label="Loading..." role="status">
           <svg
             className="h-12 w-12 animate-spin stroke-white"
