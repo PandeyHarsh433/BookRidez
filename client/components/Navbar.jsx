@@ -5,21 +5,39 @@ import { FaCircleUser } from "react-icons/fa6";
 import Link from "next/link";
 import { useRecoilState } from "recoil";
 import { loginModalState, modalWarningState, joinAsCustomerModalState } from "@/data/store";
-import useApiRequest from "@/hooks/useApiRequest";
 import { toast } from "react-hot-toast";
-import useAuth from "@/hooks/useAuth";
 
-const Navbar = ({ getCookies }) => {
+const Navbar = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
+  const [userRole, setUserRole] = useState();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginModal, setShowLoginModal] = useRecoilState(loginModalState);
   const [warningModal, setWarningModal] = useRecoilState(modalWarningState);
   const [joinAsCustomerModal, setJoinAsCustomerModal] = useRecoilState(joinAsCustomerModalState);
 
-  const { isLoggedIn, userRole } = useAuth(getCookies);
+  useEffect(() => {
+    const fetchCookies = async () => {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
+        const response = await fetch(`${baseUrl}/api/get-cookies`);
+        if (response.ok) {
+          const data = await response.json();
+          console.log(Boolean(data.loggedIn))
+          setIsLoggedIn(Boolean(data.loggedIn));
+          setUserRole(data?.role);
+        } else {
+          throw new Error('Failed to fetch cookies');
+        }
+      } catch (error) {
+        console.error("Error fetching cookies:", error);
+        toast.error("Failed to fetch cookies");
+      }
+    };
 
-  console.log(isLoggedIn, userRole)
+    fetchCookies();
+  }, []);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -70,7 +88,7 @@ const Navbar = ({ getCookies }) => {
           <div className="flex items-center justify-between">
             <Link href="/">
               <img
-                className="h-8 sm:h-14"
+                className="h-20 sm:h-14"
                 src="/logo.png"
                 alt="Logo"
               />
@@ -206,7 +224,7 @@ const Navbar = ({ getCookies }) => {
                     }
                     <Link
                       href="#"
-                      className={`hover:bg-orange-400 cursor-pointer pl-4 rounded-sm transition-all pr-8 py-1 ${isLoggedIn && userRole === "User" ? "block" : "hidden"}`}
+                      className={`hover: bg - orange - 400 cursor - pointer pl - 4 rounded - sm transition - all pr - 8 py - 1 ${isLoggedIn && userRole === "User" ? "block" : "hidden"}`}
                       onClick={joinAsCustomer}
                     >
                       Join as Customer
