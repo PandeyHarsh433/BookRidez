@@ -16,8 +16,6 @@ import { FaAngleDown } from "react-icons/fa";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { AiOutlineClose } from "react-icons/ai";
 import Loader from "@/components/Loader";
-import useAuth from "@/hooks/useAuth";
-import getCookies from "@/utils/cookies";
 import useApiRequest from "@/hooks/useApiRequest";
 
 const Account = () => {
@@ -27,6 +25,8 @@ const Account = () => {
   const [detailsModal, setDetailsModal] = useState(false);
   const [bookingDetails, setBookingDetails] = useState();
   const [userData, setUserData] = useState();
+  const [userRole, setUserRole] = useState();
+  const [isLoggedIn, setIsLoggedIn] = useState();
   const [deleteId, setDeleteId] = useState();
   const [vehicles, setVehicles] = useState();
   const [customerProduct, setCustomerProduct] = useState();
@@ -40,7 +40,27 @@ const Account = () => {
 
   const [openAccordion, setOpenAccordion] = useState(null);
   const { data, error, sendRequest } = useApiRequest();
-  const { isLoggedIn, userRole } = useAuth(getCookies);
+
+  useEffect(() => {
+    const fetchCookies = async () => {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
+        const response = await fetch(`${baseUrl}/api/get-cookies`);
+        if (response.ok) {
+          const data = await response.json();
+          setIsLoggedIn(Boolean(data.loggedIn));
+          setUserRole(data?.role);
+        } else {
+          throw new Error('Failed to fetch cookies');
+        }
+      } catch (error) {
+        console.error("Error fetching cookies:", error);
+        toast.error("Failed to fetch cookies");
+      }
+    };
+
+    fetchCookies();
+  }, []);
 
   const accordionItems = [
     {
@@ -969,7 +989,7 @@ const Account = () => {
 
               {customerProduct &&
                 customerProduct?.map((item, index) => (
-                  <div className="w-full flex sm:flex-row flex-col justify-between items-center border-b border-b-slate-400 py-4" key = {index}>
+                  <div className="w-full flex sm:flex-row flex-col justify-between items-center border-b border-b-slate-400 py-4" key={index}>
                     <div className="sm:w-[30%] w-full">
                       <img
                         src={item?.image}
