@@ -207,7 +207,13 @@ const acceptBooking = async (req, res) => {
         .json({ success: false, message: "Booking is canceled" });
     }
 
-    const vehicle = await MarketPlace.findById(booking?.vehicle);
+    if (booking.status === "Booked") {
+      return res
+        .status(400)
+        .json({ success: false, message: "Already Booked" });
+    }
+
+    const vehicle = await MarketPlace.findById(booking.vehicle);
     if (!vehicle) {
       return res.status(403).json({
         success: false,
@@ -220,6 +226,7 @@ const acceptBooking = async (req, res) => {
       if (customerBooking.customerId.toString() === customerId) {
         customerBooking.status = "Booked";
         customerFound = true;
+        break;
       }
     }
 
@@ -235,19 +242,21 @@ const acceptBooking = async (req, res) => {
         customerBooking.status !== "Pending"
       );
     });
-    console.log(booking?.customers);
 
     booking.status = "Booked";
     await booking.save();
 
     const user = await User.findById(booking.user);
-    user.bookings.push(booking._id);
-    await user.save();
+    if (user) {
+      user.bookings.push(booking._id);
+      await user.save();
+    }
 
-    const customer = await Customer.findOne({ customerId: booking.customer });
-    console.log(customer);
-    customer.marketPlace.push(booking._id);
-    await customer.save();
+    const customer = await Customer.findById(customerId);
+    if (customer) {
+      customer.marketPlace.push(booking._id);
+      await customer.save();
+    }
 
     res
       .status(200)
@@ -279,7 +288,7 @@ const rejectBooking = async (req, res) => {
         .json({ success: false, message: "Booking is already canceled" });
     }
 
-    const vehicle = await MarketPlace.findById(booking?.vehicle);
+    const vehicle = await MarketPlace.findById(booking.vehicle);
     if (!vehicle) {
       return res.status(403).json({
         success: false,
@@ -292,6 +301,7 @@ const rejectBooking = async (req, res) => {
       if (customerBooking.customerId.toString() === customerId) {
         customerBooking.status = "Rejected";
         customerFound = true;
+        break;
       }
     }
 
@@ -311,16 +321,20 @@ const rejectBooking = async (req, res) => {
     await booking.save();
 
     const user = await User.findById(booking.user);
-    user.bookings = user.bookings.filter(
-      (id) => id.toString() !== booking._id.toString()
-    );
-    await user.save();
+    if (user) {
+      user.bookings = user.bookings.filter(
+        (id) => id.toString() !== booking._id.toString()
+      );
+      await user.save();
+    }
 
-    const customer = await Customer.findOne({ customerId: booking.customer });
-    customer.marketPlace = customer.marketPlace.filter(
-      (id) => id.toString() !== booking._id.toString()
-    );
-    await customer.save();
+    const customer = await Customer.findById(customerId);
+    if (customer) {
+      customer.marketPlace = customer.marketPlace.filter(
+        (id) => id.toString() !== booking._id.toString()
+      );
+      await customer.save();
+    }
 
     res
       .status(200)
