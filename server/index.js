@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["https://www.vrhaman.com"],
+    origin: 'https://vrhaman.com',
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   })
