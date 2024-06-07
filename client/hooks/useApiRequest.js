@@ -1,9 +1,12 @@
+'use client'
+
 import { useState } from "react";
 import axios from "axios";
 import { useSetRecoilState } from "recoil";
 import { loadingState } from "@/data/store";
 
 const API_BASE_URL = "http://localhost:8000";
+console.log(API_BASE_URL)
 
 const useApiRequest = () => {
   const setLoadingState = useSetRecoilState(loadingState);

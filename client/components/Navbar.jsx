@@ -5,11 +5,11 @@ import { FaCircleUser } from "react-icons/fa6";
 import Link from "next/link";
 import { useRecoilState } from "recoil";
 import { loginModalState, modalWarningState, joinAsCustomerModalState } from "@/data/store";
-import useApiRequest from "@/hooks/useApiRequest";
 import { toast } from "react-hot-toast";
+import getCookies from "@/utils/cookies";
 import useAuth from "@/hooks/useAuth";
 
-const Navbar = ({ getCookies }) => {
+const Navbar = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
@@ -17,9 +17,8 @@ const Navbar = ({ getCookies }) => {
   const [warningModal, setWarningModal] = useRecoilState(modalWarningState);
   const [joinAsCustomerModal, setJoinAsCustomerModal] = useRecoilState(joinAsCustomerModalState);
 
-  const { isLoggedIn, userRole } = useAuth(getCookies);
+  const { isLoggedIn, userRole, userId } = useAuth(getCookies);
 
-  console.log(isLoggedIn, userRole)
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -206,7 +205,7 @@ const Navbar = ({ getCookies }) => {
                     }
                     <Link
                       href="#"
-                      className={`hover:bg-orange-400 cursor-pointer pl-4 rounded-sm transition-all pr-8 py-1 ${isLoggedIn && userRole === "User" ? "block" : "hidden"}`}
+                      className={`hover: bg - orange - 400 cursor - pointer pl - 4 rounded - sm transition - all pr - 8 py - 1 ${isLoggedIn && userRole === "User" ? "block" : "hidden"}`}
                       onClick={joinAsCustomer}
                     >
                       Join as Customer

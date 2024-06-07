@@ -1,5 +1,5 @@
 require("dotenv").config();
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { StandaloneSearchBox, LoadScript } from "@react-google-maps/api";
 import { FaAngleDown } from "react-icons/fa";
 import { MdMyLocation } from "react-icons/md";
@@ -7,8 +7,8 @@ import { orderDetailsState, useOrderDetailsFromLocalStorage } from "@/data/store
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
-import useAuth from "@/hooks/useAuth";
 import getCookies from "@/utils/cookies";
+import useAuth from "@/hooks/useAuth";
 
 const libraries = ["places"];
 
@@ -54,7 +54,7 @@ const Booking = () => {
   const inputRef = useRef();
   const router = useRouter();
 
-  const { isLoggedIn, userRole, userId, loading } = useAuth(getCookies);
+  const { isLoggedIn, userRole, userId } = useAuth(getCookies);
 
   const handleSearch = () => {
     if (!isLoggedIn) {

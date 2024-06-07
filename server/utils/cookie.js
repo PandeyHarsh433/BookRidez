@@ -1,31 +1,18 @@
 const setAuthCookie = (res, userId, role, token) => {
-  res.cookie("userId", userId, {
-    maxAge: 1000 * 60 * 60 * 24,
-    httpOnly: true,
-    secure: true,
-    sameSite: "strict",
-  });
+  const domain = process.env.DOMAIN_URL;
 
-  res.cookie("token", token, {
-    maxAge: 1000 * 60 * 60 * 24,
+  const cookieOptions = {
+    maxAge: 1000 * 60 * 60 * 24 * 30,
     httpOnly: true,
     secure: true,
-    sameSite: "strict",
-  });
+    domain: domain,
+    sameSite: "None",
+  };
 
-  res.cookie("loggedIn", true, {
-    secure: true,
-    httpOnly: true,
-    maxAge: 1000 * 60 * 60 * 24,
-    sameSite: "strict",
-  });
-
-  res.cookie("role", role, {
-    secure: true,
-    httpOnly: true,
-    maxAge: 1000 * 60 * 60 * 24,
-    sameSite: "strict",
-  });
+  res.cookie("userId", userId, cookieOptions);
+  res.cookie("token", token, cookieOptions);
+  res.cookie("loggedIn", true, cookieOptions);
+  res.cookie("role", role, cookieOptions);
 };
 
 module.exports = setAuthCookie;
