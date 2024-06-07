@@ -1,12 +1,9 @@
-'use client'
-
 import React, { useState, useRef, useEffect } from "react";
 import useClickOutside from "@/hooks/useClickOutside";
 import useApiRequest from "@/hooks/useApiRequest";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
-import getCookies from "@/utils/cookies";
 
 const LoginModal = ({ onClose }) => {
   const [otp, setOtp] = useState(undefined);
@@ -15,7 +12,7 @@ const LoginModal = ({ onClose }) => {
   const [stage, setStage] = useState(1);
   const [timerSeconds, setTimerSeconds] = useState(60);
   const { data, error, sendRequest } = useApiRequest();
-  const { isLoggedIn, userRole, userId } = useAuth(getCookies);
+  const { isLoggedIn, userRole, userId } = useAuth();
 
   const modalRef = useRef(null);
   const router = useRouter();

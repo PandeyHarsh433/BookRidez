@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import { IoGrid } from "react-icons/io5";
 import { RiEBikeLine } from "react-icons/ri";

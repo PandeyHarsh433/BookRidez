@@ -3,7 +3,6 @@ const setAuthCookie = (res, userId, role, token) => {
 
   const cookieOptions = {
     maxAge: 1000 * 60 * 60 * 24 * 30,
-    httpOnly: true,
     secure: true,
     domain: domain,
     sameSite: "None",

@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useRef } from "react";
 import Booking from "@/components/Booking";
 import Carousel from "@/components/Carousel";
