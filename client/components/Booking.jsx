@@ -1,5 +1,6 @@
 require("dotenv").config();
 import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { StandaloneSearchBox, LoadScript } from "@react-google-maps/api";
 import { FaAngleDown } from "react-icons/fa";
 import { MdMyLocation } from "react-icons/md";
@@ -43,6 +44,9 @@ const Booking = () => {
   const [pickupTimeOpen, setPickupTimeOpen] = useState(false);
   const [dropTimeOpen, setDropTimeOpen] = useState(false);
   const [pickupDate, setPickupDate] = useState("");
+  const [userRole, setUserRole] = useState();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState("");
   const [dropDate, setDropDate] = useState("");
   const [pickupTimeIndex, setPickupTimeIndex] = useState(0);
   const [dropTimeIndex, setDropTimeIndex] = useState(1);

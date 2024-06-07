@@ -10,9 +10,12 @@ import getCookies from "@/utils/cookies";
 import useAuth from "@/hooks/useAuth";
 
 const Navbar = () => {
+const Navbar = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
+  const [userRole, setUserRole] = useState();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginModal, setShowLoginModal] = useRecoilState(loginModalState);
   const [warningModal, setWarningModal] = useRecoilState(modalWarningState);
   const [joinAsCustomerModal, setJoinAsCustomerModal] = useRecoilState(joinAsCustomerModalState);
