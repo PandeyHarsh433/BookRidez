@@ -36,7 +36,7 @@ const time = [
 
 export async function generateStaticParams() {
     try {
-        const response = await axios.get('https://bookridez.onrender.com/market/get-products');
+        const response = await axios.get('http://localhost:8000');
 
         if (response.data && response.data.success) {
             console.log("Products fetched");
