@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useRef } from "react";
 import Booking from "@/components/Booking";
 import Carousel from "@/components/Carousel";
@@ -5,7 +7,7 @@ import Explore from "@/components/Explore";
 import FAQ from "@/components/FAQ";
 import Featured from "@/components/Featured";
 import Footer from "@/components/Footer";
-import LoginModal from "@/components/Loginmodal";
+import LoginModal from "@/components/LoginModal";
 import {
   loginModalState,
   loadingState,

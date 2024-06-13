@@ -1,8 +1,10 @@
+"use client";
+
 import React, { useEffect } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { BiArrowBack } from "react-icons/bi";
 import { Carousel } from "react-responsive-carousel";
-import Wrapper from "./Wrapper";
+import Wrapper from "./Wrappper";
 
 const Hero = () => {
   const carouselData = [

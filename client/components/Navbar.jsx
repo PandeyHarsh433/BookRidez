@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { FaCircleUser } from "react-icons/fa6";
 import Link from "next/link";
