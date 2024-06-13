@@ -5,7 +5,7 @@ import Explore from "@/components/Explore";
 import FAQ from "@/components/FAQ";
 import Featured from "@/components/Featured";
 import Footer from "@/components/Footer";
-import LoginModal from "@/components/LoginModal";
+import LoginModal from "@/components/Loginmodal";
 import {
   loginModalState,
   loadingState,
