@@ -144,10 +144,19 @@ const editUserController = async (req, res) => {
 
 const userLogoutController = async (req, res) => {
   try {
-    res.clearCookie("userId");
-    res.clearCookie("token");
-    res.clearCookie("loggedIn");
-    res.clearCookie("role");
+
+    const domain = process.env.DOMAIN_URL;
+    const cookieOptions = {
+      domain: domain,
+      secure: true,
+      sameSite: "None"
+    };
+
+    res.clearCookie("userId", cookieOptions);
+    res.clearCookie("token", cookieOptions);
+    res.clearCookie("loggedIn", cookieOptions);
+    res.clearCookie("role", cookieOptions);
+
 
     res
       .status(200)

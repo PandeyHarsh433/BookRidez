@@ -31,8 +31,7 @@ const CustomerSchema = mongoose.Schema(
     },
     gender: {
       type: String,
-      enum: ["Male", "Female", "Other", "NA"],
-      default: "N/A",
+      enum: ["Male", "Female", "Other"],
     },
     marketPlace: [
       {

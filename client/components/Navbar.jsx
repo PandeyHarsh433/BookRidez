@@ -186,11 +186,11 @@ const Navbar = () => {
                   onClick={toggleAccount}
                 />
                 {showAccount && (
-                  <div className="absolute right-6 top-10 bg-white shadow-lg py-2 px-1 rounded-md flex flex-col gap-2 transition-opacity duration-300">
+                  <div className="absolute right-6 top-10 bg-white shadow-lg py-2 px-2 rounded-md flex flex-col text-left gap-2 transition-opacity duration-300">
                     {
                       isLoggedIn ? <Link
                         href="/account"
-                        className="hover:bg-orange-400 cursor-pointer pl-4 rounded-sm transition-all pr-8 py-1"
+                        className="hover:bg-orange-400 cursor-pointer rounded-sm transition-all pr-8 py-1 p-1"
                         onClick={toggleAccount}
                       >
                         Account
@@ -203,13 +203,13 @@ const Navbar = () => {
                     }
                     <Link
                       href="#"
-                      className={`hover: bg - orange - 400 cursor - pointer pl - 4 rounded - sm transition - all pr - 8 py - 1 ${isLoggedIn && userRole === "User" ? "block" : "hidden"}`}
+                      className={`hover:bg-orange-400 cursor-pointer rounded-sm transition-all pr-2 p-1 py-1 ${isLoggedIn && userRole === "User" ? "block" : "hidden"}`}
                       onClick={joinAsCustomer}
                     >
                       Join as Customer
                     </Link>
                     <div
-                      className="hover:bg-orange-400 cursor-pointer pl-4 pr-8 py-1 rounded-sm transition-all"
+                      className="hover:bg-orange-400 cursor-pointer pr-8 py-1 rounded-sm transition-all p-1"
                       id="login"
                       onClick={handleLoginButtonClick}
                     >
