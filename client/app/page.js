@@ -20,6 +20,7 @@ import useClickOutside from "@/hooks/useClickOutside";
 import Loader from "@/components/Loader";
 import Modal from "@/components/Modal";
 import useApiRequest from "@/hooks/useApiRequest";
+import useAuth from "@/hooks/useAuth";
 
 const Page = () => {
   const [showLoading, setShowLoading] = useRecoilState(loadingState);
@@ -29,6 +30,8 @@ const Page = () => {
   const [joinAsCustomerModal, setJoinAsCustomerModal] = useRecoilState(
     joinAsCustomerModalState
   );
+
+  const { isLoggedIn, userRole } = useAuth();
 
   const router = useRouter();
   const modalRef = useRef(null);
@@ -97,7 +100,7 @@ const Page = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="">
       {warningModal && (
         <Modal warningText={"Are you really want to Logout?"}>
           <button
@@ -137,7 +140,9 @@ const Page = () => {
         </div>
       )}
       <Carousel />
-      <Booking />
+      {
+        userRole !== "Customer" ? <Booking /> : null
+      }
       <Explore />
       <Featured />
       <FAQ />

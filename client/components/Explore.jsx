@@ -54,7 +54,7 @@ const Explore = () => {
   };
 
   return (
-    <div className="mt-[18rem] md:mt-[18rem] p-5">
+    <div className={`${userRole !== 'Customer' ? 'mt-[18rem] md:mt-[18rem]' : 'mt-10'} p-5`}>
       <div className="flex overflow-x-scroll no-scrollbar gap-5 md:gap-14 items-center justify-center">
         <label htmlFor="all" className="cursor-pointer">
           <input
@@ -157,7 +157,7 @@ const Explore = () => {
       </div>
 
       <div className="flex justify-center items-center mt-6">
-        {isLoggedIn ? (
+        {userRole !== 'Customer' ? isLoggedIn ? (
           <Link
             href="/explore"
             className="py-4 px-10 sm:px-20 bg-orange-600 text-white rounded-md text-lg font-medium hover:bg-orange-700 transition-all duration-300"
@@ -171,7 +171,7 @@ const Explore = () => {
           >
             Check&nbsp;Availability
           </button>
-        )}
+        ) : null}
       </div>
     </div>
   );

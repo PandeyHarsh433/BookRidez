@@ -289,7 +289,7 @@ const Account = () => {
       .then((response) => {
         if (response.data && response.data.success) {
           console.log("logged out successfully");
-          window.location.reload();
+          window.location.replace("/");
         } else {
           console.log("Error in logging out");
         }
