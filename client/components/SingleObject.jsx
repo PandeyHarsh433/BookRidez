@@ -110,7 +110,7 @@ const SingleObject = ({ id }) => {
   };
 
   const bookYourRide = async () => {
-    console.log(process.env.RAZORPAY_API_KEY);
+    console.log(process.env.NEXT_PUBLIC_RAZORPAY_API_KEY);
     const handlePayment = () => {
       return new Promise((resolve, reject) => {
         const options = {

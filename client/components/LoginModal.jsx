@@ -165,14 +165,14 @@ const LoginModal = ({ onClose }) => {
             </button>
           </div>
           <div className="flex justify-center items-center gap-2 pt-3">
-            <span
+            <button
               className={`text-orange-500 cursor-pointer hover:text-orange-600 transition-all duration-300 ${stage === 1 ? "hidden" : ""}`}
               disabled={timerRunning || stage === 1}
               onClick={handleResendOTP}
               style={{ opacity: timerRunning || stage === 1 ? 0.5 : 1 }}
             >
               Resend OTP
-            </span>
+            </button>
             <span>{timerRunning ? `${timerSeconds}s` : ""}</span>
           </div>
         </div>

@@ -5,8 +5,6 @@ import axios from "axios";
 import { useSetRecoilState } from "recoil";
 import { loadingState } from "@/data/store";
 
-const API_BASE_URL = "http://localhost:8000";
-
 const useApiRequest = () => {
   const setLoadingState = useSetRecoilState(loadingState);
   const [data, setData] = useState(null);
@@ -18,7 +16,7 @@ const useApiRequest = () => {
     setLoadingState(true);
     return axios({
       method,
-      url: `${API_BASE_URL}/${url}`,
+      url: `${process.env.NEXT_PUBLIC_API_BASE_URL}/${url}`,
       data: body,
       headers: {
         "Content-Type": "application/json",

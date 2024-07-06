@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { StandaloneSearchBox, LoadScript } from "@react-google-maps/api";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import * as cn from "classnames";
@@ -19,6 +20,8 @@ import Loader from "@/components/Loader";
 import useApiRequest from "@/hooks/useApiRequest";
 import useAuth from "@/hooks/useAuth";
 
+const libraries = ["places"];;
+
 const Account = () => {
   const [selectedOption, setSelectedOption] = useState("profile");
   const [modal, setModal] = useState(false);
@@ -31,7 +34,7 @@ const Account = () => {
   const [customerProduct, setCustomerProduct] = useState();
   const [bookingData, setBookingData] = useState();
   const [model, setModel] = useState(null);
-  const [modelDropDown, setModelDropDown] = useState(false);
+  const [modelDropDown, setModelDropDown] = useState(false)
   const [searchQuery, setSearchQuery] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loader, setLoader] = useState(false);
@@ -41,6 +44,7 @@ const Account = () => {
   const { data, error, sendRequest } = useApiRequest();
 
   const { isLoggedIn, userRole, userId } = useAuth();
+  const inputRef = useRef();
 
 
   const accordionItems = [
@@ -50,7 +54,7 @@ const Account = () => {
         <ul>
           <li>
             <span className="font-semibold text-base text-slate-400">Name: </span>
-            {bookingDetails?.user.name || 'N/A'}
+            {bookingDetails?.user?.name || 'N/A'}
           </li>
           <li>
             <span className="font-semibold text-base text-slate-400">Email: </span>
@@ -133,6 +137,7 @@ const Account = () => {
       .email("Invalid email address")
       .required("Email is required"),
     dob: Yup.string(),
+    location: Yup.string(),
     kyc: Yup.string()
       .matches(/^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$/, "Invalid Aadhaar Number")
     ,
@@ -141,7 +146,6 @@ const Account = () => {
         /^[A-Z]{2}[0-9]{2}[0-9A-Z]{14}$/,
         "Invalid Driving Licence Number"
       )
-
   });
 
   useEffect(() => {
@@ -192,6 +196,15 @@ const Account = () => {
       }
     },
   });
+
+  const handlePlaceChange = () => {
+    const places = inputRef.current.getPlaces();
+    if (places && places.length > 0) {
+      const place = places[0];
+      console.log(place.formatted_address);
+      formik.setFieldValue("location", place.formatted_address);
+    }
+  };
 
   const getUserData = async () => {
     try {
@@ -583,6 +596,32 @@ const Account = () => {
                     {formik.touched.dl && formik.errors.dl && (
                       <div className="text-red-500 text-sm">{formik.errors.dl}</div>
                     )}
+
+                    <div className="pt-4">
+                      <label htmlFor="location" className="block text-gray-700 text-sm font-bold mb-2">
+                        Your Location
+                      </label>
+
+                      <div className="w-full">
+                        <LoadScript
+                          googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+                          libraries={libraries}
+                        >
+                          <StandaloneSearchBox
+                            onLoad={(ref) => (inputRef.current = ref)}
+                            onPlacesChanged={handlePlaceChange}
+                          >
+                            <input
+                              type="text"
+                              name="location"
+                              placeholder="Enter Your Location"
+                              ref={inputRef}
+                              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                            />
+                          </StandaloneSearchBox>
+                        </LoadScript>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
@@ -697,7 +736,7 @@ const Account = () => {
                     <h2 id={`accordion-collapse-heading-${index + 1}`}>
                       <button
                         type="button"
-                        className="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3"
+                        className="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-gray-200F hover:bg-gray-100 gap-3"
                         data-accordion-target={`#accordion-collapse-body-${index + 1}`}
                         aria-expanded={openAccordion === index}
                         aria-controls={`accordion-collapse-body-${index + 1}`}
@@ -727,7 +766,7 @@ const Account = () => {
                       className={`${openAccordion === index ? '' : 'hidden'}`}
                       aria-labelledby={`accordion-collapse-heading-${index + 1}`}
                     >
-                      <div className="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                      <div className="p-5 border border-b-0 border-gray-200">
                         {item.content}
                       </div>
                     </div>
@@ -899,11 +938,17 @@ const Account = () => {
               </div>
               <div>{userData?.aadhaarNo}</div>
             </div>
-            <div className="flex items-center bg-white gap-7   pt-3 sm:text-normal text-sm">
+            <div className="flex items-center bg-white gap-[3.8rem] border-b border-b-slate-200 py-3 sm:text-normal text-sm">
               <div className="font-semibold text-slate-500">
                 Driving&nbsp;Licence
               </div>
               <div>{userData?.licenceNo}</div>
+            </div>
+            <div className="flex items-center bg-white gap-[4.2rem] pt-3 sm:text-normal text-sm">
+              <div className="font-semibold text-slate-500">
+                Location
+              </div>
+              <div>{userData?.location}</div>
             </div>
           </div>
         ) : selectedOption === "booking" ? (

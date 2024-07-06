@@ -1,4 +1,3 @@
-require("dotenv").config();
 import React, { useRef, useState, useEffect } from "react";
 import { StandaloneSearchBox, LoadScript } from "@react-google-maps/api";
 import { FaAngleDown } from "react-icons/fa";
@@ -119,7 +118,7 @@ const Booking = () => {
 
     if (pickupDate === selectedDate) {
       setFilter(true);
-      setDropTimeIndex(pickupTimeIndex + 1);
+      setDropTimeIndex(pickupTimeIndex + 3);
     } else {
       setFilter(false);
     }
@@ -171,7 +170,7 @@ const Booking = () => {
       <div className="flex flex-col md:flex-row md:justify-evenly md:items-center gap-2">
         <div className="w-full">
           <LoadScript
-            googleMapsApiKey="AIzaSyAy1Vgp6BmeMsnEp5Jc_ice2MrB0KDoZEE"
+            googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
             libraries={libraries}
           >
             <StandaloneSearchBox

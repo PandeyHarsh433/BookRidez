@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const Footer = () => {
@@ -40,6 +41,13 @@ const Footer = () => {
           >
             Help
           </a>
+
+          <Link
+            href="/terms-and-conditions"
+            className="text-sm text-gray-600 transition-colors duration-300 hover:text-orange-600"
+          >
+            Terms and Conditions
+          </Link>
         </div>
 
         <p className="mt-6 text-sm text-gray-500 lg:mt-0">

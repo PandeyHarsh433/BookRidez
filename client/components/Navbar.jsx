@@ -62,12 +62,12 @@ const Navbar = () => {
 
   return (
     <nav className="theme-light relative bg-orange-400">
-      <div className="container px-6 py-4 mx-auto">
+      <div className="container px-6 py-3 mx-auto">
         <div className="lg:flex lg:items-center lg:justify-between">
           <div className="flex items-center justify-between">
             <Link href="/">
               <img
-                className="h-20 sm:h-14"
+                className="h-16 sm:h-18 w-auto"
                 src="/logo.png"
                 alt="Logo"
               />
@@ -181,10 +181,16 @@ const Navbar = () => {
             </div>
             {!isOpen && (
               <div className="flex flex-col items-center lg:mt-0">
-                <FaCircleUser
+                {isLoggedIn ? <FaCircleUser
                   className="text-2xl cursor-pointer text-white"
                   onClick={toggleAccount}
-                />
+                /> :
+                  <button onClick={() => setShowLoginModal(true)}
+                    className="text-white bg-orange-500 text-md font-medium px-3 py-2 rounded-md border- border-orange-800"
+                  >
+                    Log in
+                  </button>
+                }
                 {showAccount && (
                   <div className="absolute right-6 top-10 bg-white shadow-lg py-2 px-2 rounded-md flex flex-col text-left gap-2 transition-opacity duration-300">
                     {
@@ -206,14 +212,14 @@ const Navbar = () => {
                       className={`hover:bg-orange-400 cursor-pointer rounded-sm transition-all pr-2 p-1 py-1 ${isLoggedIn && userRole === "User" ? "block" : "hidden"}`}
                       onClick={joinAsCustomer}
                     >
-                      Join as Customer
+                      Join as Vendor
                     </Link>
                     <div
                       className="hover:bg-orange-400 cursor-pointer pr-8 py-1 rounded-sm transition-all p-1"
                       id="login"
-                      onClick={handleLoginButtonClick}
+                      onClick={() => setWarningModal(true)}
                     >
-                      {handleLoginText()}
+                      Log out
                     </div>
                   </div>
                 )}
