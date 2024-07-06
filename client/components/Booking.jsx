@@ -246,7 +246,7 @@ const Booking = () => {
                   onClick={() => {
                     setPickupTimeIndex(index);
                     setPickupTimeOpen(false);
-                    setDropTimeIndex(index + 1);
+                    setDropTimeIndex(index + 3);
                   }}
                 >
                   {item}
@@ -273,7 +273,7 @@ const Booking = () => {
             >
               {time.map((item, index) =>
                 filter === true ? (
-                  index > pickupTimeIndex && (
+                  index > pickupTimeIndex + 3 && (
                     <div
                       className="py-2 pl-4 rounded-md cursor-pointer hover:bg-slate-200 mx-1"
                       key={index}
