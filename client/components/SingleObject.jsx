@@ -113,7 +113,7 @@ const SingleObject = ({ id }) => {
     const handlePayment = () => {
       return new Promise((resolve, reject) => {
         const options = {
-          key: "rzp_test_d0KvCx4905cdER",
+          key: process.env.NEXT_PUBLIC_RAZORPAY_API_KEY,
           amount: 4900,
           currency: 'INR',
           name: 'BookRidez',
