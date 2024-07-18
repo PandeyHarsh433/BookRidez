@@ -797,17 +797,29 @@ const Explore = () => {
                       className={`transition-all duration-300 ${engineDropDown ? "absolute" : "hidden"
                         } mt-1 bg-slate-200 rounded-b-md shadow-md z-10 w-full pt-2`}
                     >
-                      <div className="py-2 pl-4 rounded-md cursor-pointer hover:bg-slate-200 mx-1">
-                        1:00
+                      <div className="py-2 pl-4 rounded-md cursor-pointer hover:bg-slate-200 mx-1" onClick={() => {
+                        setEngine(120);
+                        setEngineDropDown(false);
+                      }}>
+                        120
                       </div>
-                      <div className="py-2 pl-4 rounded-md cursor-pointer hover:bg-slate-200 mx-1">
-                        2:00
+                      <div className="py-2 pl-4 rounded-md cursor-pointer hover:bg-slate-200 mx-1" onClick={() => {
+                        setEngine(150);
+                        setEngineDropDown(false);
+                      }}>
+                        150
                       </div>
-                      <div className="py-2 pl-4 rounded-md cursor-pointer hover:bg-slate-200 mx-1">
-                        3:00
+                      <div className="py-2 pl-4 rounded-md cursor-pointer hover:bg-slate-200 mx-1" onClick={() => {
+                        setEngine(180);
+                        setEngineDropDown(false);
+                      }}>
+                        180
                       </div>
-                      <div className="mb-1 py-2 pl-4 rounded-md cursor-pointer hover:bg-slate-200 mx-1">
-                        4:00
+                      <div className="mb-1 py-2 pl-4 rounded-md cursor-pointer hover:bg-slate-200 mx-1" onClick={() => {
+                        setEngine(200);
+                        setEngineDropDown(false);
+                      }}>
+                        200
                       </div>
                     </div>
                   </div>
@@ -818,27 +830,40 @@ const Explore = () => {
                       className="w-[100%] rounded-md py-4 px-4 bg-transparent focus:outline-none flex justify-between items-center cursor-pointer"
                       onClick={toggleModelDropdown}
                     >
-                      <span>Model</span>
+                      <span>{model ? model?.name : "Model"}</span>
                       <span>
                         <FaAngleDown />
                       </span>
                     </div>
                     <div
                       className={`transition-all duration-300 ${modelDropDown ? "absolute" : "hidden"
-                        } mt-1 bg-white rounded-b-md shadow-md z-10 w-full pt-2`}
+                        } mt-1 bg-white rounded-b-md shadow-md z-10 w-full max-h-40 overflow-y-auto`}
                     >
-                      <div className="py-2 pl-4 rounded-md cursor-pointer hover:bg-slate-200 mx-1">
-                        1:00
-                      </div>
-                      <div className="py-2 pl-4 rounded-md cursor-pointer hover:bg-slate-200 mx-1">
-                        2:00
-                      </div>
-                      <div className="py-2 pl-4 rounded-md cursor-pointer hover:bg-slate-200 mx-1">
-                        3:00
-                      </div>
-                      <div className="mb-1 py-2 pl-4 rounded-md cursor-pointer hover:bg-slate-200 mx-1">
-                        4:00
-                      </div>
+                      <input
+                        type="text"
+                        placeholder="Search model..."
+                        className="w-full p-2 border rounded-md focus:outline-none"
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                      />
+                      {vehicles && vehicles
+                        .filter((model) =>
+                          model.name.toLowerCase().includes(searchQuery.toLowerCase())
+                        )
+                        .slice(0, 5)
+                        .map((model, index) => (
+                          <div
+                            key={index}
+                            onClick={() => {
+                              setModel(model);
+                              setModelDropDown(false);
+                              console.log(model)
+                            }}
+                            className="py-2 pl-4 rounded-md cursor-pointer hover:bg-slate-200 mx-1"
+                          >
+                            {model?.name}
+                          </div>
+                        ))}
                     </div>
                   </div>
 

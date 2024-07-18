@@ -24,8 +24,8 @@ module.exports = {
   GetCustomerBookings: Booking.getCustomerBookings,
   GetUserBookings: Booking.getUserBookings,
   AcceptBooking: Booking.acceptBooking,
-  RejectBooking: Booking.rejectBooking,
   GetBookingDetails: Booking.getBookingDetails,
+  CustomerBookingHistory: Booking.getCustomerBookingHistory,
 
   // MarketPlace
   AddProduct: MarketPlace.addProduct,

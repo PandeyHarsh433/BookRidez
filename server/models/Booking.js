@@ -7,24 +7,12 @@ const BookingSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    customers: [
-      {
-        customerId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Customer",
-          required: true,
-        },
-        status: {
-          type: String,
-          required: true,
-          default: "Pending",
-          enum: ["Pending", "Booked", "Rejected", "Canceled"],
-        },
-      },
-    ],
+    customer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Customer",
+    },
     status: {
       type: String,
-      required: true,
       default: "Pending",
       enum: ["Pending", "Booked", "Canceled"],
     },
@@ -65,6 +53,10 @@ const BookingSchema = new mongoose.Schema(
       default: 1,
       required: true,
     },
+    transactionId: {
+      type: String,
+      required: true
+    }
   },
   {
     timestamps: true,

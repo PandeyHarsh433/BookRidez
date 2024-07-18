@@ -8,8 +8,8 @@ const {
   GetCustomerBookings,
   GetUserBookings,
   AcceptBooking,
-  RejectBooking,
   GetBookingDetails,
+  CustomerBookingHistory,
 } = require("./../controllers");
 
 const router = express.Router();
@@ -19,18 +19,18 @@ router.route("/book").post(userAuthMiddleware, BookRide);
 router.route("/cancel-booking").post(userAuthMiddleware, CancelBooking);
 
 router
-  .route("/customer/booking-history")
+  .route("/customer/bookings")
   .get(customerAuthMiddleware, checkUserRole("Customer"), GetCustomerBookings);
+
+router
+  .route("/customer/booking-history")
+  .get(customerAuthMiddleware, checkUserRole("Customer"), CustomerBookingHistory);
 
 router.route("/user/booking-history").get(userAuthMiddleware, GetUserBookings);
 
 router
   .route("/accept-booking")
   .post(customerAuthMiddleware, checkUserRole("Customer"), AcceptBooking);
-
-router
-  .route("/reject-booking")
-  .post(customerAuthMiddleware, checkUserRole("Customer"), RejectBooking);
 
 router.route("/booking/get").get(GetBookingDetails);
 

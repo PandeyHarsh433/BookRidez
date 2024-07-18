@@ -33,6 +33,7 @@ const Account = () => {
   const [vehicles, setVehicles] = useState();
   const [customerProduct, setCustomerProduct] = useState();
   const [bookingData, setBookingData] = useState();
+  const [customerBookingData, setCustomerBookingData] = useState();
   const [model, setModel] = useState(null);
   const [modelDropDown, setModelDropDown] = useState(false)
   const [searchQuery, setSearchQuery] = useState("");
@@ -150,11 +151,15 @@ const Account = () => {
 
   useEffect(() => {
     getUserData();
-  }, [selectedOption])
+  }, [])
 
   useEffect(() => {
     getBookingHistory();
-  }, [selectedOption === "booking"])
+  }, [selectedOption === "booking-history"])
+
+  useEffect(() => {
+    getCustomerBookings();
+  }, [selectedOption === "bookings"])
 
   useEffect(() => {
     formik.setValues(initialValues);
@@ -225,7 +230,6 @@ const Account = () => {
 
       if (response.data && response.data.success) {
         console.log("User details fetched");
-        console.log(response.data.userData)
 
         const data = userRole === "Customer" ? response.data.customerData : response.data.userData;
 
@@ -268,8 +272,25 @@ const Account = () => {
 
       if (response.data && response.data.success) {
         console.log("Booking data fetched");
-        console.log(response.data.bookings)
         setBookingData(response.data.bookings)
+      } else {
+        console.log("Error in fetching user data");
+      }
+    } catch (error) {
+      console.error("Error getting data:", error);
+    }
+  }
+
+  const getCustomerBookings = async () => {
+    try {
+      const response = await sendRequest("customer/bookings", {
+        method: "GET",
+      });
+
+      if (response.data && response.data.success) {
+        console.log("Booking data fetched");
+        console.log(response.data.bookings)
+        setCustomerBookingData(response.data.bookings)
       } else {
         console.log("Error in fetching user data");
       }
@@ -381,12 +402,16 @@ const Account = () => {
   }
 
   const handleNav = (event) => {
-    if (event.target.value == "booking") {
+    if (event.target.value == "booking-history") {
       getBookingHistory();
     }
     if (event.target.value == "market") {
       getCustomerProducts();
     }
+    if (event.target.value == "bookings") {
+      getCustomerBookings();
+    }
+    console.log(event.target.value)
     setSelectedOption(event.target.value);
   };
 
@@ -422,7 +447,6 @@ const Account = () => {
 
       if (response.data && response.data.success) {
         console.log("booking details fetched");
-        console.log(response.data.bookingData)
         setBookingDetails(response.data.bookingData)
       } else {
         console.log("Error in fetching user data");
@@ -452,30 +476,6 @@ const Account = () => {
       }
     } catch (error) {
       toast.error("Error in accepting!");
-      console.error("Error getting data:", error);
-    }
-  };
-
-
-  const handleReject = async (id) => {
-    try {
-      const response = await sendRequest("reject-booking", {
-        method: "POST",
-        params: {
-          bookingId: id
-        }
-      });
-      if (response.data && response.data.success) {
-        getBookingHistory();
-        toast.success("Booking Rejected!");
-        setDetailsModal(false);
-        console.log("Order Rejected");
-      } else {
-        toast.error("Booking Rejecting Failed!");
-        console.log("Error in rejecting booking");
-      }
-    } catch (error) {
-      toast.error("Booking Rejecting Failed!");
       console.error("Error getting data:", error);
     }
   };
@@ -776,13 +776,6 @@ const Account = () => {
               <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <button
                   type="button"
-                  className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-500 text-base font-medium text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:ml-3 sm:w-auto sm:text-sm transition-all duration-300 ${userRole === "User" && "hidden"} ${bookingDetails?.booking?.status !== "Pending" && "hidden"}`}
-                  onClick={() => handleReject(bookingDetails?.booking?._id)}
-                >
-                  Reject
-                </button>
-                <button
-                  type="button"
                   className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm transition-all duration-300 ${userRole === "User" && "hidden"} ${bookingDetails?.booking?.status !== "Pending" && "hidden"}`}
                   onClick={() => handleAccept(bookingDetails?.booking?._id)}
                 >
@@ -831,17 +824,39 @@ const Account = () => {
             <input
               type="radio"
               className="hidden"
-              id="booking"
+              id="bookings"
               name="account"
-              value="booking"
-              checked={selectedOption === "booking"}
+              value="bookings"
+              checked={selectedOption === "bookings"}
               onChange={handleNav}
             />
             <label
-              htmlFor="booking"
+              htmlFor="bookings"
               className={cn(
                 "flex gap-3 items-center cursor-pointer hover:bg-slate-200 p-2 rounded-md",
-                selectedOption === "booking" && "bg-slate-200"
+                selectedOption === "bookings" && "bg-slate-200",
+                userRole === "Customer" ? "" : "hidden"
+              )}
+            >
+              <div>
+                <SlCalender className="text-xl text-orange-500" />
+              </div>
+              <div>Bookings</div>
+            </label>
+            <input
+              type="radio"
+              className="hidden"
+              id="booking-history"
+              name="account"
+              value="booking-history"
+              checked={selectedOption === "booking-history"}
+              onChange={handleNav}
+            />
+            <label
+              htmlFor="booking-history"
+              className={cn(
+                "flex gap-3 items-center cursor-pointer hover:bg-slate-200 p-2 rounded-md",
+                selectedOption === "booking-history" && "bg-slate-200"
               )}
             >
               <div>
@@ -951,7 +966,7 @@ const Account = () => {
               <div>{userData?.location}</div>
             </div>
           </div>
-        ) : selectedOption === "booking" ? (
+        ) : selectedOption === "booking-history" ? (
           <div className="w-full sm:p-8 p-2 border rounded-md flex flex-col gap-8">
             <div className="flex flex-wrap justify-start gap-8 items-center">
               <div className="border-1 flex gap-2 flex-col w-[14rem] p-4 py-6 rounded-md shadow-lg bg-orange-100 border-orange-200">
@@ -965,12 +980,8 @@ const Account = () => {
                   <div className="border w-96 rounded-md p-5 flex flex-col gap-2 shadow-md" key={index}>
                     <div className="flex items-center w-full justify-between">
                       <div>
-                        <div className="font-semibold sm:text-xl text-lg">
-                          {item?.vehicle?.name}
-                        </div>
                         <div className="text-xs font-bold text-slate-500">
-                          <span>Customer</span>
-                          <span>#876564</span>
+                          <span>Booking</span>
                         </div>
                       </div>
                     </div>
@@ -991,7 +1002,52 @@ const Account = () => {
                           View Details
                         </span>
                         <span className="text-orange-600 border px-2 py-1 rounded-md bg-orange-100">
-                          {item?.customers[0]?.status}
+                          {item?.status}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        ) : selectedOption === "bookings" && userRole === "Customer" ? (
+          <div className="w-full sm:p-8 p-2 border rounded-md flex flex-col gap-8">
+            <div className="flex flex-wrap justify-start gap-8 items-center">
+              <div className="border-1 flex gap-2 flex-col w-[14rem] p-4 py-6 rounded-md shadow-lg bg-orange-100 border-orange-200">
+                <div className="text-xl">Total Rides</div>
+                <div className="text-lg">{customerBookingData && customerBookingData.length}</div>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {
+                customerBookingData?.map((item, index) => (
+                  <div className="border w-96 rounded-md p-5 flex flex-col gap-2 shadow-md" key={index}>
+                    <div className="flex items-center w-full justify-between">
+                      <div>
+                        <div className="text-xs font-bold text-slate-500">
+                          <span>Bookings</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-end">
+                      <div className="flex flex-col gap-2">
+                        <span className="sm:text-sm text-xs">
+                          {item?.pickUpPoint}
+                        </span>
+                        <span className="font-semibold text-slate-600">{item?.pickUpTime}</span>
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <span className="font-semibold text-slate-600">{item?.dropTime}</span>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex justify-between items-end">
+                        <span className="text-sm text-orange-500 cursor-pointer underline underline-offset-2 hover:text-orange-600 transition-all duration-300" onClick={() => handleDetailModal(item?._id)}>
+                          View Details
+                        </span>
+                        <span className="text-orange-600 border px-2 py-1 rounded-md bg-orange-100">
+                          {item?.status}
                         </span>
                       </div>
                     </div>

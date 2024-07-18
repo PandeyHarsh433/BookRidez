@@ -110,7 +110,6 @@ const SingleObject = ({ id }) => {
   };
 
   const bookYourRide = async () => {
-    console.log(process.env.NEXT_PUBLIC_RAZORPAY_API_KEY);
     const handlePayment = () => {
       return new Promise((resolve, reject) => {
         const options = {
@@ -143,7 +142,6 @@ const SingleObject = ({ id }) => {
     };
 
     try {
-
       if (!pickupLocation || pickupTimeIndex === undefined || dropTimeIndex === undefined || !pickupDate || !dropDate || !id || !time) {
         console.log("Please provide all required information.");
         toast.error("Please provide all the details for the booking");
@@ -155,7 +153,7 @@ const SingleObject = ({ id }) => {
       if (paymentResponse) {
         toast.success("Payment successful!");
 
-        // Proceed with booking after successful payment
+        const transactionId = paymentResponse.razorpay_payment_id;
         const response = await sendRequest('book', {
           method: "POST",
           body: JSON.stringify({
@@ -166,7 +164,8 @@ const SingleObject = ({ id }) => {
             pickUpTime: time[pickupTimeIndex],
             totalHour: 2,
             dropTime: time[dropTimeIndex],
-            price: 200
+            price: 200,
+            transactionId: transactionId
           }),
           headers: {
             'Content-Type': 'application/json'
@@ -187,6 +186,7 @@ const SingleObject = ({ id }) => {
       toast.error("Error occurred during payment or booking");
     }
   };
+
 
 
   const togglePickupTime = () => {
@@ -523,7 +523,7 @@ const SingleObject = ({ id }) => {
             <div className="flex justify-between items-center">
               <div className="sm:text-xl text-md">Advance Rental Cost</div>
               <div className="flex gap-1 items-center font-semibold">
-                <LuIndianRupee /> 200
+                <LuIndianRupee /> 49
               </div>
             </div>
           </div>

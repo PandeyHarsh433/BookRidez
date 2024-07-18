@@ -41,12 +41,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "N/A",
     },
-    bookings: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Booking",
-      },
-    ],
   },
   {
     timestamps: true,

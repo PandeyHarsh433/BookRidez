@@ -147,7 +147,7 @@ const Navbar = () => {
                 ) : null}
               </Link>
               <Link
-                href="#"
+                href="/"
                 className="px-3 py-2 mx-3 mt-2 text-white transition-colors duration-300 transform rounded-md lg:mt-0  hover:bg-[#ea580c]"
               >
                 Explore
