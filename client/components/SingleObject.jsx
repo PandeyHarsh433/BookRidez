@@ -399,7 +399,7 @@ const SingleObject = ({ id }) => {
                     Pickup&nbsp;Point
                   </span>
                   <span className="text-slate-600 text-xs md:text-base font-medium">
-                    {orderDetails?.pickupLocation.slice(0, 50)}...
+                    {orderDetails?.pickupLocation?.slice(0, 50)}...
                   </span>
                 </div>
               </div>
