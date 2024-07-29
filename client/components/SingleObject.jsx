@@ -266,7 +266,7 @@ const SingleObject = ({ id }) => {
                     onChange={handlePickupDateChange}
                     min={new Date().toISOString().split("T")[0]}
                     placeholder="Enter Pickup Location"
-                    className="pl-4 pr-2 py-4 rounded-md focus:outline-none text-md flex-1 w-60"
+                    className="caret-black pl-4 pr-2 py-4 rounded-md focus:outline-none text-md flex-1 w-60"
                   />
                 </div>
                 <div>
@@ -290,7 +290,7 @@ const SingleObject = ({ id }) => {
                     >
                       {time.map((item, index) => (
                         <div
-                          className="py-2 pl-4 rounded-md cursor-pointer hover:bg-slate-200 mx-1"
+                          className="caret-black py-2 pl-4 rounded-md cursor-pointer hover:bg-slate-200 mx-1"
                           key={index}
                           onClick={() => {
                             setPickupTimeIndex(index);
@@ -315,7 +315,7 @@ const SingleObject = ({ id }) => {
                     onChange={handleDropDateChange}
                     min={pickupDate || new Date().toISOString().split("T")[0]}
                     placeholder="Enter Pickup Date"
-                    className="pl-4 pr-2 py-4 rounded-md focus:outline-none text-md flex-1 w-60"
+                    className="caret-black pl-4 pr-2 py-4 rounded-md focus:outline-none text-md flex-1 w-60"
                   />
                 </div>
 
